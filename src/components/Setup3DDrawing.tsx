@@ -250,21 +250,21 @@ const Setup3DDrawing: React.FC<Setup3DDrawingProps> = ({ onSubmit, spaceSize, se
 
   // Initialize schema with both infrastructure components and selected plants
   const [schema, setSchema] = useState<SchemaComponent[]>(() => {
-    const infrastructureComponents = [
+    const infrastructureComponents: SchemaComponent[] = [
       { type: HydroComponentType.WATER_PUMP, quantity: 1 },
       { type: HydroComponentType.NUTRIENT_PUMP, quantity: 1 },
       { type: HydroComponentType.SENSOR_NODE, quantity: 2 },
       { type: HydroComponentType.LIGHT_PANEL, quantity: 2 },
-    ]
+    ];
 
     // Convert selected plants to schema components
-    const plantComponents = Object.entries(selectedPlants).map(([id, quantity]) => ({
+    const plantComponents: SchemaComponent[] = Object.entries(selectedPlants).map(([id, quantity]) => ({
       type: Number(id) + 10 as HydroComponentType, // Convert plant ID to HydroComponentType (offset by 10)
-      quantity
-    }))
+      quantity: quantity as number
+    }));
 
-    return [...infrastructureComponents, ...plantComponents]
-  })
+    return [...infrastructureComponents, ...plantComponents];
+  });
 
   const [isSchemaMode, setIsSchemaMode] = useState(true)
 
@@ -356,7 +356,9 @@ const Setup3DDrawing: React.FC<Setup3DDrawingProps> = ({ onSubmit, spaceSize, se
         },
         maintenanceRoutes: [],
         setupType: "horizontal",
-        levels: 1
+        levels: 1,
+        selectedPlants: selectedPlants,
+        plantData: [] // Initialize as empty array instead of empty object
       }
 
       console.log("Generated layout:", generatedLayout)

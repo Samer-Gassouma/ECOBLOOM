@@ -136,17 +136,18 @@ const fetchPlants = async (): Promise<Plant[]> => {
   }
 };
 
-// Memoized Plant Card Component
-const PlantCard = motion(forwardRef<HTMLDivElement, {
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
+
+const PlantCard = forwardRef<HTMLDivElement, {
   plant: Plant;
   quantity: number;
-  onSelect: (id: string, action: 'add' | 'remove') => void;
+  onSelect: (id: string, action: "add" | "remove") => void;
   disabled: boolean;
 }>(({ plant, quantity, onSelect, disabled }, ref) => (
-  <Card 
+  <Card
     ref={ref}
-    component="div"
-    sx={{ 
+    sx={{
       cursor: disabled ? 'not-allowed' : 'pointer',
       opacity: disabled ? 0.7 : 1,
       transition: 'all 0.3s ease-in-out',
@@ -281,7 +282,9 @@ const PlantCard = motion(forwardRef<HTMLDivElement, {
       </Box>
     </CardContent>
   </Card>
-)));
+));
+
+const MotionPlantCard = motion(PlantCard);
 
 const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) => {
   const navigate = useNavigate();
@@ -417,8 +420,7 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
   };
 
   return (
-    <Box
-      component={motion.div}
+    <MotionBox
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -436,8 +438,7 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
         px: { xs: 2, sm: 4 },
       }}
     >
-      <Box
-        component={motion.div}
+      <MotionBox
         variants={itemVariants}
         sx={{ width: '100%', maxWidth: '600px' }}
       >
@@ -467,10 +468,9 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
           Choose the plants you want to grow in your hydroponic setup.
           We'll help you optimize the space for maximum yield.
         </Typography>
-      </Box>
+      </MotionBox>
 
-      <Box
-        component={motion.div}
+      <MotionBox
         variants={itemVariants}
         sx={{ 
           width: '100%', 
@@ -511,7 +511,7 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
         >
           {spaceUsagePercentage.toFixed(0)}% utilized
         </Typography>
-      </Box>
+      </MotionBox>
 
       <Box sx={{ width: '100%', mb: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <TextField
@@ -566,11 +566,11 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
             filteredAndSortedPlants.map((plant) => (
               <Grid item xs={12} sm={6} md={4} key={plant.id}>
                 <Box
-                  component={motion.div}
+                  as={motion.div}
                   variants={itemVariants}
                   layout
                 >
-                  <PlantCard
+                  <MotionPlantCard
                     plant={plant}
                     quantity={selectedPlants[plant.id] || 0}
                     onSelect={handlePlantSelect}
@@ -586,13 +586,11 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
         </AnimatePresence>
       </Grid>
 
-      <Box
-        component={motion.div}
+      <MotionBox
         variants={itemVariants}
         sx={{ mt: 6, display: 'flex', gap: 2 }}
       >
-        <Button
-          component={motion.button}
+        <MotionButton
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           variant="outlined"
@@ -609,10 +607,9 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
           }}
         >
           View in Virtual Environment
-        </Button>
+        </MotionButton>
 
-        <Button
-          component={motion.button}
+        <MotionButton
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           variant="contained"
@@ -621,24 +618,13 @@ const PlantSelection = ({ spaceSize, onPlantsSelected }: PlantSelectionProps) =>
           onClick={() => onPlantsSelected(selectedPlants)}
           sx={{ 
             minWidth: 200,
-            position: 'relative',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '100%',
-              height: '20px',
-              background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 70%)',
-              pointerEvents: 'none',
-            }
+            position: 'relative'
           }}
         >
           Continue
-        </Button>
-      </Box>
-    </Box>
+        </MotionButton>
+      </MotionBox>
+    </MotionBox>
   );
 };
 

@@ -41,7 +41,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelection }) => {
   }
 
   if (showDrawing) {
-    return <Setup3DDrawing onSubmit={handleDrawingSubmit} />
+    return <Setup3DDrawing 
+      onSubmit={handleDrawingSubmit} 
+      spaceSize={10} 
+      selectedPlants={{}} 
+    />
   }
 
   return (

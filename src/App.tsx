@@ -196,6 +196,7 @@ const MainApp = () => {
     <Setup3DVisualization
       spaceSize={spaceSize}
       selectedPlants={selectedPlants}
+      setupType="horizontal"
     />
   ]
 
